@@ -1,0 +1,46 @@
+.card{
+    position: relative;
+    height: 340px;
+}
+
+.random_char_card{
+    padding: 20px;
+}
+.random_char_wrapper{
+    display: flex;
+    .random_char_image{
+        width: 300px;
+        display: flex;
+        align-items: center;
+    }
+    .random_char_text{
+        font-size: 25px;
+        margin-left: 30px;
+        
+        .random_char_params{
+            margin-top: 15px;
+            list-style-type: none;
+
+            &_item{
+                font-weight: 200;
+                font-style: italic;
+                margin-top: 7px;
+                
+                span{
+                    font-weight: 500;
+                    font-style: normal;
+                    font-size: 28px;
+                }
+            }
+        }
+    }
+    
+}
+
+.random_char_buttons{
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    width: 50%;
+
+}

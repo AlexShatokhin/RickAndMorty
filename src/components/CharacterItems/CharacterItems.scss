@@ -1,0 +1,40 @@
+.character_items{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.character_item{
+    width: 250px;
+    min-height: 300px;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 10px;
+    margin-right: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin-top: 20px;
+    cursor: pointer;
+    &-image{
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+    }
+    &-name{
+        padding: 10px;
+        font-weight: 500;
+    }
+
+    &:hover{
+        box-shadow: 0 8px 12px 0 rgba(0,0,0,0.3);
+    }
+}
+
+.load_more{
+    display: block;
+    width: 300px;
+    height: 60px;
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+}
