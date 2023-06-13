@@ -17,6 +17,28 @@
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 	background: #ffffff;
 	z-index: 2;
+
+	img{
+		width: 50px;
+		cursor: pointer;
+	}
+
+	&-buttons{
+		display: flex;
+		width: 200px;
+		justify-content: space-around;
+		div{
+			cursor: pointer;
+			&:hover{
+				font-weight: 600;
+				text-decoration: underline;
+			}
+		}
+	}
+	a{
+		color: #000000;
+		text-decoration: none;
+	}
 }
 
 .rick_and_morty_logo{
