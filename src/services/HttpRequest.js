@@ -1,27 +1,23 @@
+import useHttpHook from "../components/hooks/HttpHook";
 
+const RickAndMortyService = () => {
 
-class RickAndMortyService {
+    const _apiBase = "https://rickandmortyapi.com/api";
+    const {error, loading, httpRequest} = useHttpHook();
 
-    _apiBase = "https://rickandmortyapi.com/api";
-
-    doRequest = async (url) => {
-        const req = await fetch(url);
-        return req.json();
+    const getAllCharacters = async (page = 0, filter) => {
+        const resFilter = _getFilterRequest(filter);
+        const chars = await httpRequest(_apiBase + "/character/?page=" + page + resFilter);
+        return chars.results.map(char => _transformData(char));
     }
 
-    getAllCharacters = async (page = 0, filter) => {
-        const resFilter = this._getFilterRequest(filter);
-        const chars = await this.doRequest(this._apiBase + "/character/?page=" + page + resFilter);
-        return chars.results.map(char => this._transformData(char));
-    }
-
-    getCharacter = async (id) => {
-        const char = await this.doRequest(this._apiBase + "/character/" + id)
-        return this._transformData(char);
+    const getCharacter = async (id) => {
+        const char = await httpRequest(_apiBase + "/character/" + id)
+        return _transformData(char);
     }
 
 
-    _getFilterRequest = (filter) => {
+    const _getFilterRequest = (filter) => {
         let res = "";
 
         for(let key in filter){
@@ -32,7 +28,7 @@ class RickAndMortyService {
         return res;
     }
 
-    _transformData = (data) => {
+    const _transformData = (data) => {
         const char = data
 
         return {
@@ -48,6 +44,8 @@ class RickAndMortyService {
             "episodes": char.episodes,
         }
     }
+
+    return {loading, error, getAllCharacters, getCharacter};
 
 }
 

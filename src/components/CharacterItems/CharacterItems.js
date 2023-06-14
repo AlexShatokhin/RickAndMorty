@@ -1,75 +1,51 @@
-import { Component } from "react";
+import { Component, useEffect, useState } from "react";
 
-import RickAndMortyService from "../../services/HttpRequest"
+import useRickAndMortyService from "../../services/HttpRequest"
 import Spinner from "../Spinner/Spinner";
 import Error from "../Error/Error";
 
 import "./CharacterItems.scss"
 import "../../mixins/mixins.scss"
 
-class CharacterItems extends Component{
+const CharacterItems = (props) => {
 
-    state = {
-        chars: [],
-        loading: true,
-        error: false,
-        page: 1,
-        isFiltered: false,
-        charListEnded: false,
-    }
+    const [chars, setChars] = useState([]);
+    const [page, setPage] = useState(1);
+    const [charListEnded, setCharListEnded] = useState(false);
+    const [prevPropsFilter, setPrevPropsFilter] = useState({});
 
-    service = new RickAndMortyService();
+    const {loading, error, getAllCharacters} = useRickAndMortyService();
 
-    componentDidMount(){
-        this.updateChars();
-    }
+    useEffect(updateChars,[])
 
-    componentDidUpdate(prevProps){
-        if(JSON.stringify(prevProps.filter) != JSON.stringify(this.props.filter))
-            this.updateChars(1, true);
-    }
-
-    updateChars = (page, filter) => {
-        this.setState({
-            loading: true,
-        });
-
-        if(filter){
-            this.setState({
-                chars: [],
-                page: 1,
-            });
+    useEffect(()=>{
+        if(JSON.stringify(prevPropsFilter) != JSON.stringify(props.filter)){
+            console.log(props.filter);
+            setPrevPropsFilter(props.filter);
+            setPage(1);
+            setChars([]);
+            updateChars();
         }
+    }, [props.filter])
 
+    function updateChars(page, filter){
 
-        this.service.getAllCharacters(page, this.props.filter)
-        .then(this.onCharsLoaded)
-        .catch(this.onError)
+        getAllCharacters(page, props.filter)
+        .then(onCharsLoaded)
 
 
     }
 
 
-    onCharsLoaded = (elems) => {
-        this.setState({
-            chars: [...this.state.chars, ...elems],
-            loading: false,
-            error: false,
-            page: this.state.page + 1,
-            charListEnded: elems.length < 20 
-        })
+    function onCharsLoaded(elems) {
+        setChars(chars => [...chars, ...elems]);
+        setPage(page => page + 1);
+        setCharListEnded(elems.length < 20 )
     }
 
 
-    onError = () => {
-        this.setState({
-            chars: [],
-            loading: false,
-            error: true,
-        })
-    }
 
-    renderItems = (chars) => {
+    function renderItems(chars){
         return chars.map(char => {
             return (
                 <div key={char.id} className="character_item">
@@ -81,24 +57,21 @@ class CharacterItems extends Component{
     }
 
 
-    render(){
-        const {loading, error, chars} = this.state
-        const isLoading = (loading)?<Spinner /> : null;
-        const isError = (error && !loading && !chars.length)?<Error /> : null;
-        const isCharsLoaded = (chars.length)? this.renderItems(chars) : null;
+    const isLoading = (loading)?<Spinner /> : null;
+    const isError = (error)?<Error /> : null;
+    const isCharsLoaded = (chars.length)? renderItems(chars) : null;
 
-        return(
-            <>
-                <div className="character_items">
-                    {isLoading}
-                    {isError}
-                    {isCharsLoaded}
-                </div>
-                <button disabled = {this.state.charListEnded} onClick={()=>this.updateChars(this.state.page)} className="load_more button">LOAD MORE</button>
-            </>
+    return(
+        <>
+            <div className="character_items">
+                {isLoading}
+                {isError}
+                {isCharsLoaded}
+            </div>
+            <button disabled = {charListEnded} onClick={()=>updateChars(page)} className="load_more button">LOAD MORE</button>
+        </>
 
-        )
-    }
+    )
 
 }
 

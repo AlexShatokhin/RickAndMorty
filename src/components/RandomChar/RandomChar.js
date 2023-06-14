@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useEffect, useState } from "react";
 
 import RickAndMortyService from "../../services/HttpRequest";
 import Error from "../Error/Error";
@@ -7,70 +7,45 @@ import Spinner from "../Spinner/Spinner";
 import "./RandomChar.scss"
 import "../../mixins/mixins.scss"
 
-class RandomChar extends Component{
+const RandomChar = () => {
 
-    state = {
-        char: {},
-        loading: true,
-        error: false,
-    }
+    const [char, setChar] = useState({});
+    const {loading, error, getCharacter} = RickAndMortyService();
 
-    service = new RickAndMortyService();
+    useEffect(updateChar, [])
 
-    componentDidMount(){
-        this.updateChar();
-    }
+    function updateChar(){
 
-    updateChar = () => {
         const id = Math.floor(1 + Math.random() * (900 - 1));
-        this.service.getCharacter(id)
-        .then(this.onCharLoaded)
-        .catch(this.onError)
-
-        this.setState({
-            loading: true,
-        })
+        getCharacter(id)
+        .then(onCharLoaded)
     }
 
-    onCharLoaded = (elem) => {
-        this.setState({
-            char: elem,
-            loading: false,
-            error: false,
-        })
+    function onCharLoaded(elem){
+        setChar(elem);
     }
 
-    onError = () => {
-        this.setState({
-            char: {},
-            loading: false,
-            error: true,
-        })
-    }
 
-    render(){
-        const {loading, error, char} = this.state
-        const isLoading = (loading && !error && !char.length)?<Spinner /> : null;
-        const isError = (error && !loading && !char.length)?<Error /> : null;
-        const isCharLoaded = (!error && !loading)?<View image = {char.image} name = {char.name} status={char.status} gender = {char.gender} species={char.species} /> : null;
-        const btns = (
-            <div className="random_char_buttons">
-                <button className="random_char_more button">MORE</button>
-                <button onClick={this.updateChar} className="random_char_other button">NEXT</button>
-            </div>
-        )
+    const isLoading = (loading && !error && !char.length)?<Spinner /> : null;
+    const isError = (error && !loading && !char.length)?<Error /> : null;
+    const isCharLoaded = (!error && !loading)?<View image = {char.image} name = {char.name} status={char.status} gender = {char.gender} species={char.species} /> : null;
+    const btns = (
+        <div className="random_char_buttons">
+            <button className="random_char_more button">MORE</button>
+            <button onClick={updateChar} className="random_char_other button">NEXT</button>
+        </div>
+    )
 
 
-        return(
-            <div className="card">
-                {isLoading}
-                {isError}
-                {isCharLoaded}
-                {btns}
-            </div>
+    return(
+        <div className="card">
+            {isLoading}
+            {isError}
+            {isCharLoaded}
+            {btns}
+        </div>
 
-        )
-    }
+    )
 
 }
 
