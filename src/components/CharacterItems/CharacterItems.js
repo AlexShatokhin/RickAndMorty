@@ -1,4 +1,5 @@
-import { Component, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import useRickAndMortyService from "../../services/HttpRequest"
 import Spinner from "../Spinner/Spinner";
@@ -48,9 +49,12 @@ const CharacterItems = (props) => {
     function renderItems(chars){
         return chars.map(char => {
             return (
-                <div key={char.id} className="character_item">
-                    <img src={char.image} alt={char.name} className="character_item-image" />
-                    <h2 className="character_item-name">{char.name}</h2>
+                <div tabIndex={0} key={char.id} className="character_item">
+                    <Link to = {`/${char.id}`}>
+                        <img src={char.image} alt={char.name} className="character_item-image" />
+                        <h2 className="character_item-name">{char.name}</h2>
+                    </Link>
+
                 </div>
             )
         })

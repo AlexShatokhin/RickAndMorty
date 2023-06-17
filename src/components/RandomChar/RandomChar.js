@@ -1,4 +1,5 @@
-import { Component, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import RickAndMortyService from "../../services/HttpRequest";
 import Error from "../Error/Error";
@@ -31,7 +32,7 @@ const RandomChar = () => {
     const isCharLoaded = (!error && !loading)?<View image = {char.image} name = {char.name} status={char.status} gender = {char.gender} species={char.species} /> : null;
     const btns = (
         <div className="random_char_buttons">
-            <button className="random_char_more button">MORE</button>
+            <Link to={`/${char.id}`}><button className="random_char_more button">MORE</button></Link>
             <button onClick={updateChar} className="random_char_other button">NEXT</button>
         </div>
     )
