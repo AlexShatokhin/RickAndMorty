@@ -1,0 +1,36 @@
+.character{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 740px;
+    margin-top: 150px;
+    margin-left: 250px;
+    &_photo{
+        width: 350px;
+    }
+    &_text{
+        width: 330px;
+        list-style-type: none;
+        margin-top: 10px;
+        &-item{
+            font-size: 21px;
+            margin-bottom: 12px;
+            span{
+                font-style: italic;
+            }
+        }
+        &-item-name{
+            font-size: 33px;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+    }
+    i{
+        position: absolute;
+        font-size: 35px;
+        top: -20px;
+        left: 335px;
+        cursor: pointer;
+    }
+
+}

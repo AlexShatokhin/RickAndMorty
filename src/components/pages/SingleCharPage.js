@@ -6,6 +6,8 @@ import RickAndMortyService from "../../services/HttpRequest";
 import Spinner from "../Spinner/Spinner"
 import Error from "../Error/Error"
 
+import "./SingleCharPage.scss"
+
 const SingleCharPage = () => {
 
     const {id} = useParams();
@@ -31,9 +33,12 @@ const SingleCharPage = () => {
                 <ul className="character_text">
                     <li className="character_text-item character_text-item-name">{char.name}</li>
                     <li className="character_text-item"> <span>Status: </span>{char.status}</li>
-                    <li className="character_text-item"> <span>Status: </span>{char.status}</li>
-                    <li className="character_text-item"> <span>Status: </span>{char.status}</li>
+                    <li className="character_text-item"> <span>Gender: </span>{char.gender}</li>
+                    <li className="character_text-item"> <span>Species: </span>{char.species}</li>
+                    <li className="character_text-item"> <span>Location: </span>{char.location}</li>
+                    <li className="character_text-item"> <span>Origin: </span>{char.origin}</li>
                 </ul>
+                <i className="fa-solid fa-heart fa-regular"></i>
             </div>
         )
     }
