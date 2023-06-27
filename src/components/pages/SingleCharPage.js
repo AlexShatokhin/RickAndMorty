@@ -8,10 +8,11 @@ import Error from "../Error/Error"
 
 import "./SingleCharPage.scss"
 
-const SingleCharPage = () => {
+const SingleCharPage = (props) => {
 
     const {id} = useParams();
     const [char, setChar] = useState(null);
+    const [isFavorite, setIsFavorite] = useState(props.FavList.indexOf(id) != -1 ? true : false);
 
     const {loading, error, getCharacter} = RickAndMortyService();
 
@@ -38,7 +39,10 @@ const SingleCharPage = () => {
                     <li className="character_text-item"> <span>Location: </span>{char.location}</li>
                     <li className="character_text-item"> <span>Origin: </span>{char.origin}</li>
                 </ul>
-                <i className="fa-solid fa-heart fa-regular"></i>
+                <i onClick={()=>{
+                    setIsFavorite(isFavorite => !isFavorite);
+                    props.changeFavoriteList(id)
+                }} className={isFavorite ? "fa-heart fa-solid" : "fa-regular fa-heart"}></i>
             </div>
         )
     }

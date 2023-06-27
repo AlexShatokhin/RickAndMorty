@@ -1,4 +1,4 @@
-import { Component, useState } from "react";
+import {useState } from "react";
 
 import "./CharFilters.scss"
 import "../../mixins/mixins.scss"
@@ -14,7 +14,7 @@ const CharFilters = (props) => {
         const value = event.target.value;
         switch(event.target.name){
             case "gender": setGender(value); break;
-            case "staus": setStatus(value); break;
+            case "status": setStatus(value); break;
             case "species": setSpecies(value); break;
             default: break;
         }

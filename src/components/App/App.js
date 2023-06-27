@@ -1,4 +1,4 @@
-import {lazy } from 'react';
+import {lazy, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 import Error from '../Error/Error';
@@ -10,10 +10,18 @@ import RickAndMortyLogo from '../../resources/img/Rick_and_Morty_logo_small.jpg'
 const MainPage = lazy(()=> import("../pages/MainPage"));
 const SearchCharsPage = lazy(()=> import("../pages/SearchCharsPage"));
 const SingleCharPage = lazy(()=> import("../pages/SingleCharPage"));
-
+const FavoriteCharsPage = lazy(()=> import("../pages/FavoriteCharsPage"))
 
 const App = () => {
 
+    const [FavoriteList, setFavoriteList] = useState([])
+
+    function changeFavoriteList(initID){
+        if(FavoriteList.indexOf(initID) != -1)
+            setFavoriteList(FavoriteList => FavoriteList.filter((itemID)=> itemID != initID))
+        else
+            setFavoriteList(FavoriteList => [...FavoriteList, initID])
+    }
 
     return (
         <>
@@ -31,8 +39,8 @@ const App = () => {
                 <Routes>
                     <Route path='/' element = {<MainPage />} />
                     <Route path='/search' element = {<SearchCharsPage />} />
-                    <Route path='/:id' element = {<SingleCharPage />} />
-                    <Route path='/favorites' element = {<Error />} />
+                    <Route path='/:id' element = {<SingleCharPage FavList = {FavoriteList} changeFavoriteList = {(id) => changeFavoriteList(id)} />} />
+                    <Route path='/favorites' element = {<FavoriteCharsPage FavList = {FavoriteList} />} />
                     <Route path='*' element = {<Error />} />
                 </Routes>
     
