@@ -8,6 +8,9 @@ const RickAndMortyService = () => {
     const getAllCharacters = async (page = 0, filter) => {
         const resFilter = _getFilterRequest(filter);
         const chars = await httpRequest(_apiBase + "/character/?page=" + page + resFilter);
+
+        console.log(chars)
+
         return chars.results.map(char => _transformData(char));
     }
 
