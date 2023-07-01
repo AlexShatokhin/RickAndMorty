@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import {Link} from "react-router-dom"
+import Skeleton from "react-loading-skeleton";
 
+import 'react-loading-skeleton/dist/skeleton.css'
 import RickAndMortyService from "../../services/HttpRequest";
 
 import Spinner from "../Spinner/Spinner";
@@ -41,15 +43,31 @@ const FavoriteCharsPage = (props) => {
         })
     }
 
+    function renderLoadingItems(){
+        let renderSkeletons = [];
 
-    const isLoading = (loading)?<Spinner /> : null;
-    const isError = (error)?<Error /> : null;
-    const isCharsLoaded = (charList.length)? renderItems(charList) : <p className="character_items-empty">Oops! There is no favorite characters...</p>;
+        for(let i = 0; i < props.FavList.length; i++){
+            renderSkeletons[i] = 
+                <Skeleton style={{
+                    width: "250px",
+                    minHeight: "300px",
+                    borderRadius: "10px",
+                    margin: "10px"
+            }} />
+        }
+
+        return renderSkeletons;
+    }
+
+
+    const isLoading = (loading)? renderLoadingItems() : null;
+    const isError = (error)? <Error /> : null;
+    const isCharsLoaded = (charList.length)? renderItems(charList) : null;
 
     return(
         <div className="favorite_chars">
             <div className="favorite_chars-title">FAVORITE CHARACTERS</div>
-
+            {(!isLoading && !isCharsLoaded) ? <p className="character_items-empty">Oops! There is no favorite characters...</p> : null}
             <div className="character_items">
                 {isLoading}
                 {isError}
